@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Profile - EsteemDB</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="navbar">
+    <div class="logo">EsteemDB</div>
+    <nav class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="#">Browse</a>
+      <a href="#">Trending</a>
+    </nav>
+    <div class="search-profile">
+      <input type="text" class="search-bar" placeholder="Search...">
+      <button class="profile-btn">Profile</button>
+    </div>
+  </header>
+  <main class="main-content">
+    <h1>Your Profile</h1>
+    <section class="profile-watchlist">
+      <h2>Your Watchlist</h2>
+      <div id="watchlist-container">
+        <!-- Watchlist items will be dynamically loaded here -->
+      </div>
+    </section>
+  </main>
+  <script>
+    // Fetch and display the watchlist
+    function fetchWatchlist() {
+      fetch('/get-watchlist')
+        .then((response) => response.json())
+        .then((data) => {
+          const container = document.getElementById('watchlist-container');
+          container.innerHTML = ''; // Clear previous entries
+
+          if (data.watchlist.length === 0) {
+            container.innerHTML = '<p>No games in your watchlist.</p>';
+            return;
+          }
+
+          data.watchlist.forEach((game) => {
+            const gameDiv = document.createElement('div');
+            gameDiv.classList.add('game-item');
+
+            const title = document.createElement('p');
+            title.innerText = game.title;
+
+            const removeButton = document.createElement('button');
+            removeButton.innerText = 'Remove';
+            removeButton.classList.add('remove-btn');
+            removeButton.addEventListener('click', () => {
+              fetch('/remove-from-watchlist', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ id: game.id }),
+              })
+                .then((response) => response.json())
+                .then((data) => {
+                  if (data.success) {
+                    fetchWatchlist(); // Refresh the watchlist
+                  } else {
+                    alert('Failed to remove game.');
+                  }
+                });
+            });
+
+            gameDiv.appendChild(title);
+            gameDiv.appendChild(removeButton);
+            container.appendChild(gameDiv);
+          });
+        });
+    }
+
+    // Load watchlist on page load
+    document.addEventListener('DOMContentLoaded', fetchWatchlist);
+  </script>
+</body>
+</html>

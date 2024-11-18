@@ -1,0 +1,89 @@
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background-color: #1a1a2e;
+    color: #eaeaea;
+  }
+  
+  .navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    background-color: #3f3f7f;
+  }
+  
+  .navbar .logo {
+    font-size: 24px;
+    font-weight: bold;
+  }
+  
+  .navbar .nav-links a {
+    margin: 0 10px;
+    color: #eaeaea;
+    text-decoration: none;
+  }
+  
+  .navbar .search-profile {
+    display: flex;
+    align-items: center;
+  }
+  
+  .search-bar {
+    padding: 5px;
+    margin-right: 10px;
+  }
+  
+  .profile-btn {
+    background-color: #5c5c99;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+  }
+  
+  .main-content {
+    display: flex;
+    margin: 20px;
+  }
+  
+  .left-section, .right-section {
+    width: 50%;
+    padding: 10px;
+  }
+  
+  .category, .watchlist, .recent-discussions {
+    margin-bottom: 20px;
+    padding: 10px;
+    background-color: #282852;
+    border-radius: 8px;
+  }
+  
+  .category h2, .watchlist h2, .recent-discussions h2 {
+    margin-bottom: 10px;
+  }
+  
+  .game-item, .watchlist-item, .discussion {
+    display: flex;
+    justify-content: space-between;
+    margin: 5px 0;
+  }
+  
+  .add-btn {
+    background-color: #5c5c99;
+    color: white;
+    border: none;
+    padding: 5px;
+    cursor: pointer;
+  }
+  
+  .view-all-btn {
+    display: block;
+    margin: 10px auto 0;
+    padding: 5px 10px;
+    background-color: #5c5c99;
+    color: white;
+    border: none;
+    cursor: pointer;
+  }
+  
