@@ -31,6 +31,19 @@ const db = new sqlite3.Database(dbPath, (err) => {
     }
 });
 
+const dbPathWatchlist = path.join(__dirname, 'database', 'watchlist.db');
+const dbWatchlist = new sqlite3.Database(dbPathWatchlist, (err) => {
+    if (err) {
+        console.error('Error opening database:', err);
+    } else {
+        console.log('Connected to SQLite database');
+        dbWatchlist.run(`CREATE TABLE IF NOT EXISTS watchlist (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            game_title TEXT
+        )`);
+    }
+});
+
 
 // Get a single game by ID
 app.get('/api/games/:id', (req, res) => {
@@ -75,28 +88,27 @@ app.get('/api/games', (req, res) => {
 
 app.post('/add-to-watchlist', (req, res) => {
     const { title } = req.body;
-    db.run('INSERT INTO games (title) VALUES (?)', [title], function (err) {
+    dbWatchlist.run('INSERT INTO watchlist (game_title) VALUES (?)', [title], function (err) {
       if (err) {
         console.error(err.message);
         res.json({ success: false });
-      } else {
-        db.run('INSERT INTO watchlist (id) VALUES (?)', [this.lastID], (err) => {
-          if (err) {
-            console.error(err.message);
-            res.json({ success: false });
-          } else {
-            res.json({ success: true });
-          }
-        });
+      } else { 
+        if (err) {
+          console.error(err.message);
+          res.json({ success: false });
+        } else {
+          res.json({ success: true });
+        }
       }
-    });
-  });
+    }
+  )
+})
+
   
   app.get('/get-watchlist', (req, res) => {
-    db.all(
+    dbWatchlist.all(
       `SELECT watchlist.id, games.game_title
-       FROM watchlist
-       JOIN games ON watchlist.id = games.id`,
+       FROM watchlist`,
       [],
       (err, rows) => {
         if (err) {
@@ -111,7 +123,7 @@ app.post('/add-to-watchlist', (req, res) => {
   
   app.post('/remove-from-watchlist', (req, res) => {
     const { id } = req.body;
-    db.run('DELETE FROM watchlist WHERE id = ?', [id], (err) => {
+    dbWatchlist.run('DELETE FROM watchlist WHERE id = ?', [id], (err) => {
       if (err) {
         console.error(err.message);
         res.json({ success: false });
