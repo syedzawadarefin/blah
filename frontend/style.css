@@ -124,19 +124,24 @@ body {
   
   .edit-btn {
     margin: 20px 30px;
-    padding: 0px 20px
+    padding: 5px 20px;
+    margin-left: 80px;
   }
 
   .remove-btn {
     margin: 20px 0px;
+    padding: 5px 7px
   }
 
   .game-item {
     background-color: #3f3f7f;
     padding: 10px 50px;
     border-radius: 10px;
+    display: flex;
+    align-items: center;
   }
 
   .game-item p {
-    color: rgb(0, 0, 0);
+    color: rgb(255, 255, 255);
+    margin-left: 15px;
   }
