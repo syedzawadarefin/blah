@@ -16,6 +16,8 @@ body {
   .navbar .logo {
     font-size: 24px;
     font-weight: bold;
+    text-decoration: none;
+    color:white
   }
   
   .navbar .nav-links a {
@@ -45,6 +47,7 @@ body {
   .main-content {
     display: flex;
     margin: 20px;
+    justify-content: center;
   }
   
   .left-section, .right-section {
