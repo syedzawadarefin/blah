@@ -25,8 +25,6 @@ const db = new sqlite3.Database(dbPath, (err) => {
         db.run(`CREATE TABLE IF NOT EXISTS games (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             game_title TEXT,
-            developer TEXT,
-            release_date TEXT,
             rating INTEGER
         )`);
     }
@@ -50,9 +48,10 @@ app.get('/api/games/:id', (req, res) => {
 
 // Add a new game
 app.post('/api/games', (req, res) => {
-    const { game_title, developer, release_date, rating} = req.body;
-    db.run(`INSERT INTO games (game_title, developer, release_date, rating) VALUES (?, ?, ?, ?)`,
-        [game_title, developer, release_date, rating],
+    console.log("Received data:", req.body); // Log incoming request
+    const { game_title, rating} = req.body;
+    db.run(`INSERT INTO games (game_title, rating) VALUES (?, ?)`,
+        [game_title, rating],
         function (err) {
             if (err) {
                 res.status(500).send('Error inserting data');
@@ -95,9 +94,9 @@ app.listen(port, () => {
 // Update a game session
 app.put('/api/games/:id', (req, res) => {
   const { id } = req.params;
-  const { game_title, developer, release_date, rating} = req.body;
-  db.run(`UPDATE study_sessions SET subject = ?, date = ?, duration = ? WHERE id = ?`,
-      [subject, date, duration, id],
+  const { rating } = req.body;
+  db.run(`UPDATE games SET rating = ? WHERE id = ?`,
+      [rating, id],
       function (err) {
           if (err) {
               res.status(500).send('Error updating data');
