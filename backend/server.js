@@ -45,18 +45,18 @@ const dbWatchlist = new sqlite3.Database(dbPathWatchlist, (err) => {
 });
 
 
-// Get a single game by ID
+// Existing: Get a single game by ID
 app.get('/api/games/:id', (req, res) => {
-    const { id } = req.params;
-    db.get('SELECT * FROM games WHERE id = ?', [id], (err, row) => {
-        if (err) {
-            res.status(500).send('Error retrieving data');
-        } else if (!row) {
-            res.status(404).send('Game not found');
-        } else {
-            res.status(200).json(row);
-        }
-    });
+  const { id } = req.params;
+  db.get('SELECT * FROM games WHERE id = ?', [id], (err, row) => {
+    if (err) {
+      res.status(500).send('Error retrieving data');
+    } else if (!row) {
+      res.status(404).send('Game not found');
+    } else {
+      res.status(200).json(row);
+    }
+  });
 });
 
 

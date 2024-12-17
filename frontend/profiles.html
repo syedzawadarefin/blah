@@ -21,60 +21,25 @@
   </header>
   <main class="main-content">
     <h1>Your Profile</h1>
-    <section class="profile-watchlist">
+    <section class="watchlist">
       <h2>Your Watchlist</h2>
-      <div id="watchlist-container">
-        <!-- Watchlist items will be dynamically loaded here -->
-      </div>
+      <div id="wishlist-container"></div>
+    </section>
     </section>
   </main>
-  <script>
-    // Fetch and display the watchlist
-    function fetchWatchlist() {
-      fetch('/get-watchlist')
-        .then((response) => response.json())
-        .then((data) => {
-          const container = document.getElementById('watchlist-container');
-          container.innerHTML = ''; // Clear previous entries
-
-          if (data.watchlist.length === 0) {
-            container.innerHTML = '<p>No games in your watchlist.</p>';
-            return;
-          }
-
-          data.watchlist.forEach((game) => {
-            const gameDiv = document.createElement('div');
-            gameDiv.classList.add('game-item');
-
-            const title = document.createElement('p');
-            title.innerText = game.title;
-
-            const removeButton = document.createElement('button');
-            removeButton.innerText = 'Remove';
-            removeButton.classList.add('remove-btn');
-            removeButton.addEventListener('click', () => {
-              fetch('/remove-from-watchlist', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ id: game.id }),
-              })
-                .then((response) => response.json())
-                .then((data) => {
-                  if (data.success) {
-                    fetchWatchlist(); // Refresh the watchlist
-                  } else {
-                    alert('Failed to remove game.');
-                  }
-                });
-            });
-
-            gameDiv.appendChild(title);
-            gameDiv.appendChild(removeButton);
-            container.appendChild(gameDiv);
-          });
+  <script>  fetch('/get-watchlist')
+    .then(response => response.json())
+    .then(data => {
+      const container = document.getElementById('wishlist-container');
+      if (data.success) {
+        data.watchlist.forEach(item => {
+          const div = document.createElement('div');
+          div.className = 'watchlist-item';
+          div.textContent = item.game_title;
+          container.appendChild(div);
         });
-    }
-
+      }
+    });
     // Load watchlist on page load
     document.addEventListener('DOMContentLoaded', fetchWatchlist);
   </script>
