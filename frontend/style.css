@@ -19,7 +19,7 @@ body {
     text-decoration: none;
     color:white
   }
-  
+
   .navbar .nav-links a {
     margin: 0 10px;
     color: #eaeaea;
@@ -31,12 +31,12 @@ body {
     align-items: center;
   }
   
-  .search-bar {
+ .search-bar {
     padding: 5px;
     margin-right: 10px;
   }
-  
-  .profile-btn {
+
+ .profile-btn {
     background-color: #5c5c99;
     color: white;
     border: none;
@@ -60,11 +60,11 @@ body {
     padding: 10px;
     background-color: #282852;
     border-radius: 8px;
-  }
+  } 
   
   .category h2, .watchlist h2, .recent-discussions h2 {
     margin-bottom: 10px;
-  }
+  } 
   
   .game-item, .watchlist-item, .discussion {
     display: flex;
@@ -73,14 +73,15 @@ body {
   }
   
   .add-btn {
-    background-color: #5c5c99;
+    background-color: #5cb85c;
     color: white;
     border: none;
-    padding: 5px 10px;
-    cursor: pointer;
+    padding: 8px 12px;
+    font-size: 14px;
+    margin-top: 10px;
     border-radius: 4px;
-  }
-  
+    cursor: pointer;
+  } 
   .view-all-btn {
     display: block;
     margin: 10px auto 0;
@@ -98,7 +99,7 @@ body {
     padding: 10px 0;
   }
   
-  .game-card {
+  .gameCard {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -109,15 +110,33 @@ body {
     text-align: center;
   }
   
-  .game-card img {
+  .gameCard img {
     width: 100px;
     height: 150px;
     object-fit: cover;
     border-radius: 8px;
   }
   
-  .game-title {
+  .gameTitle {
     margin: 10px 0;
     color: #eaeaea;
   }
   
+  .edit-btn {
+    margin: 20px 30px;
+    padding: 0px 20px
+  }
+
+  .remove-btn {
+    margin: 20px 0px;
+  }
+
+  .game-item {
+    background-color: #3f3f7f;
+    padding: 10px 50px;
+    border-radius: 10px;
+  }
+
+  .game-item p {
+    color: rgb(0, 0, 0);
+  }

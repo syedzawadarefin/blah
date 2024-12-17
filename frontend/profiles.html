@@ -17,9 +17,7 @@
     </div>
   </header>
   <main class="main-content">
-    <h1>Your Profile</h1>
-    <section class="profile-watchlist"><br>
-      <h2>Your Watchlist</h2>
+    <section class="profile-watchlist">
       <div id="watchlist-container">
         <!-- Watchlist items will be dynamically loaded here -->
       </div>
@@ -28,36 +26,57 @@
   <script>
     // Fetch and display the watchlist
     function fetchWatchlist() {
-      fetch('/get-watchlist')
+      fetch('http://localhost:3001/api/games')
         .then((response) => response.json())
         .then((data) => {
           const container = document.getElementById('watchlist-container');
           container.innerHTML = ''; // Clear previous entries
 
-          if (data.watchlist.length === 0) {
+          if (data.length === 0) {
             container.innerHTML = '<p>No games in your watchlist.</p>';
             return;
           }
 
-          data.watchlist.forEach((game) => {
+          data.forEach((game) => {
             const gameDiv = document.createElement('div');
             gameDiv.classList.add('game-item');
 
-            const title = document.createElement('p');
-            title.innerText = game.title;
+            const title = document.createElement('h1');
+            title.innerText = game.game_title;
+
+            const rating = document.createElement('p')
+            rating.innerText = game.rating;
+
+            const editButton = document.createElement('button');
+            editButton.innerText = 'Edit';
+            editButton.classList.add('edit-btn');
+            editButton.addEventListener('click', () => {
+            const newRating = prompt("Enter a new rating for " + game.game_title);
+              if (newRating) {
+                fetch(`http://localhost:3001/api/games/${game.id}`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ rating: newRating })
+            })
+                .then((response) => response.json())
+                .then(() => {
+                alert("Rating updated!");
+                fetchWatchlist(); // Refresh the watchlist
+              });
+          }
+        });
 
             const removeButton = document.createElement('button');
             removeButton.innerText = 'Remove';
             removeButton.classList.add('remove-btn');
             removeButton.addEventListener('click', () => {
-              fetch('/remove-from-watchlist', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ id: game.id }),
+              fetch(`http://localhost:3001/api/games/${game.id}`, {
+                method: 'DELETE',
               })
                 .then((response) => response.json())
                 .then((data) => {
                   if (data.success) {
+                    alert(`${game.game_title} removed from wishlist`);
                     fetchWatchlist(); // Refresh the watchlist
                   } else {
                     alert('Failed to remove game.');
@@ -66,6 +85,7 @@
             });
 
             gameDiv.appendChild(title);
+            gameDiv.appendChild(editButton)
             gameDiv.appendChild(removeButton);
             container.appendChild(gameDiv);
           });
