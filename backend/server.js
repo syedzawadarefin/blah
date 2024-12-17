@@ -15,6 +15,7 @@ app.use(cors());
 
 // Set up SQLite database
 const path = require('path');
+const { title } = require('process');
 const dbPath = path.join(__dirname, 'database', 'games.db');
 const db = new sqlite3.Database(dbPath, (err) => {
     if (err) {
@@ -26,8 +27,7 @@ const db = new sqlite3.Database(dbPath, (err) => {
             game_title TEXT,
             developer TEXT,
             release_date TEXT,
-            rating INTEGER,
-            notes TEXT
+            rating INTEGER
         )`);
     }
 });
@@ -50,9 +50,9 @@ app.get('/api/games/:id', (req, res) => {
 
 // Add a new game
 app.post('/api/games', (req, res) => {
-    const { game_title, developer, release_date, rating, notes } = req.body;
-    db.run(`INSERT INTO games (game_title, developer, release_date, rating, notes) VALUES (?, ?, ?, ?, ?)`,
-        [game_title, developer, release_date, rating, notes],
+    const { game_title, developer, release_date, rating} = req.body;
+    db.run(`INSERT INTO games (game_title, developer, release_date, rating) VALUES (?, ?, ?, ?)`,
+        [game_title, developer, release_date, rating],
         function (err) {
             if (err) {
                 res.status(500).send('Error inserting data');
@@ -74,54 +74,35 @@ app.get('/api/games', (req, res) => {
     });
 });
 
-app.post('/add-to-watchlist', (req, res) => {
-    const { title } = req.body;
-    dbWatchlist.run('INSERT INTO watchlist (game_title) VALUES (?)', [title], function (err) {
+// Delete a study session
+app.delete('/api/games/:id', (req, res) => {
+  const { id } = req.params;
+  db.run(`DELETE FROM games WHERE id = ?`, id, function (err) {
       if (err) {
-        console.error(err.message);
-        res.json({ success: false });
-      } else { 
-        if (err) {
-          console.error(err.message);
-          res.json({ success: false });
-        } else {
-          res.json({ success: true });
-        }
-      }
-    }
-  )
-})
-
-  
-  app.get('/get-watchlist', (req, res) => {
-    dbWatchlist.all(
-      `SELECT watchlist.id, games.game_title
-       FROM watchlist`,
-      [],
-      (err, rows) => {
-        if (err) {
-          console.error(err.message);
-          res.json({ success: false });
-        } else {
-          res.json({ success: true, watchlist: rows });
-        }
-      }
-    );
-  });
-  
-  app.post('/remove-from-watchlist', (req, res) => {
-    const { id } = req.body;
-    dbWatchlist.run('DELETE FROM watchlist WHERE id = ?', [id], (err) => {
-      if (err) {
-        console.error(err.message);
-        res.json({ success: false });
+          res.status(500).send('Error deleting data');
       } else {
-        res.json({ success: true });
+          res.status(200).send('Deleted successfully');
       }
-    });
   });
+});
+
 
 // Start the server
 app.listen(port, () => {
     console.log(`Server is running on http://localhost:${port}`);
+});
+
+// Update a game session
+app.put('/api/games/:id', (req, res) => {
+  const { id } = req.params;
+  const { game_title, developer, release_date, rating} = req.body;
+  db.run(`UPDATE study_sessions SET subject = ?, date = ?, duration = ? WHERE id = ?`,
+      [subject, date, duration, id],
+      function (err) {
+          if (err) {
+              res.status(500).send('Error updating data');
+          } else {
+              res.status(200).send('Updated successfully');
+          }
+      });
 });
