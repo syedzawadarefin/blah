@@ -1,5 +1,6 @@
 const express = require('express');
 const sqlite3 = require('sqlite3').verbose();
+const bodyParser = require('body-parser');
 const cors = require('cors');
 
 
@@ -27,19 +28,6 @@ const db = new sqlite3.Database(dbPath, (err) => {
             release_date TEXT,
             rating INTEGER,
             notes TEXT
-        )`);
-    }
-});
-
-const dbPathWatchlist = path.join(__dirname, 'database', 'watchlist.db');
-const dbWatchlist = new sqlite3.Database(dbPathWatchlist, (err) => {
-    if (err) {
-        console.error('Error opening database:', err);
-    } else {
-        console.log('Connected to SQLite database');
-        dbWatchlist.run(`CREATE TABLE IF NOT EXISTS watchlist (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            game_title TEXT
         )`);
     }
 });
