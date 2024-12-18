@@ -13,7 +13,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const gameCard = event.target.closest(".gameCard");
     const gameId = gameCard.getAttribute('data-id')
     const gameTitles = [
-        'VALORANT', 'Fortnite', 'Marvel Rivals', 'Hades'
+        'VALORANT', 'Fortnite', 'Team Fortress 2', 'Among Us', 'Marvel Rivals', 'Hades'
     ]
 
     if (!gameCard) return; 
