@@ -45,19 +45,22 @@
             title.innerText = game.game_title;
 
             const rating = document.createElement('p')
-            rating.innerText = "Your rating: " + game.rating;
+            rating.innerText = "Your rating: " + game.rating + "/5";
 
             const editButton = document.createElement('button');
             editButton.innerText = 'Edit';
             editButton.classList.add('edit-btn');
             editButton.addEventListener('click', () => {
             const newRating = prompt("Enter a new rating for " + game.game_title);
-              if (newRating) {
+              if (newRating <= 5) {
                 fetch(`http://localhost:3001/api/games/${game.id}`, {
                 method: 'PUT',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ rating: newRating })
             })
+          } else {
+            alert("You cannot put a star rating above 5!")
+            
                 .then((response) => response.json())
                 .then(() => {
                 alert("Rating updated!");
