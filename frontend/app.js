@@ -21,13 +21,13 @@ document.addEventListener("DOMContentLoaded", () => {
     const game_title = gameTitles[gameId - 1];
     const rating = "0"; 
   
-    const existingGame = games.find((game) => game.game_name === game_name);
+    // const existingGame = games.find((game) => game.game_name === game_name);
     // Send POST request to backend
   // Check if the game already exists in the wishlist
   fetch(`http://localhost:3001/api/games?title=${game_title}`)
     .then(response => response.json())
     .then(data => {
-      if (existingGame) {
+      if (data.length > 0) {
         alert(`${game_title} is already in your wishlist!`);
       } else {
         // Game doesn't exist, add it to the database
