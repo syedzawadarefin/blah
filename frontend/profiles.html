@@ -11,11 +11,12 @@
     <a href="index.html"><div class="logo">EsteemDB</div></a>
     <nav class="nav-links">
     </nav>
+    
     <div class="search-profile">
-      <input type="text" class="search-bar" placeholder="Search...">
       <button class="profile-btn">Profile</button>
     </div>
   </header>
+  <h1 style="text-align: center;">Your Watchlist</h1>
   <main class="main-content">
     <section class="profile-watchlist">
       <div id="watchlist-container">
@@ -73,7 +74,7 @@
             removeButton.innerText = 'Remove';
             removeButton.classList.add('remove-btn');
             removeButton.addEventListener('click', () => {
-              fetch(`http://localhost:3001/api/games/${game.id}`, {
+              fetch(`http://localhost:3001/api/games/${game.id}`, {   
                 method: 'DELETE',
               })
                 .then((response) => response.json())
