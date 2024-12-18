@@ -27,7 +27,8 @@ document.addEventListener("DOMContentLoaded", () => {
   fetch(`http://localhost:3001/api/games?title=${game_title}`)
     .then(response => response.json())
     .then(data => {
-      if (data.length > 0) {
+      const existingGame = data.find((game) => game.game_title === game_title);
+      if (existingGame) {
         alert(`${game_title} is already in your wishlist!`);
       } else {
         // Game doesn't exist, add it to the database
